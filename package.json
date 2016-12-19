@@ -1,0 +1,22 @@
+{
+  "name": "courtbot-engine-pg",
+  "version": "1.0.6",
+  "description": "Postgres support for courtbot-engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "keywords": [
+    "courtbot"
+  ],
+  "author": "Philip Kin",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^2.5.2",
+    "proxyquire": "^1.7.10"
+  },
+  "dependencies": {
+    "courtbot-engine": "^1.0.0",
+    "pg": "^6.1.2"
+  }
+}
