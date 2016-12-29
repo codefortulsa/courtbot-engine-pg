@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "courtbot-engine": "^1.0.0",
+    "db-migrate": "^0.10.0-beta.20",
     "pg": "^6.1.2"
   }
 }
