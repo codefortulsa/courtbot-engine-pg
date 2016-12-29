@@ -3,9 +3,6 @@ var courtbot = require("courtbot-engine");
 var moment = require("moment");
 var DBMigrate = require("db-migrate");
 
-var dbmigrate = DBMigrate.getInstance(true, {cwd: __dirname});
-return dbmigrate.up();
-
 courtbot.setRegistrationSource(function(connectionString) {
   return {
     getRegistrationById: function (id) {
@@ -158,6 +155,10 @@ courtbot.setRegistrationSource(function(connectionString) {
                       });
         });
       });
+    },
+    migrate: function() {
+      var dbmigrate = DBMigrate.getInstance(true, {cwd: __dirname});
+      return dbmigrate.up();
     }
   };
 });
