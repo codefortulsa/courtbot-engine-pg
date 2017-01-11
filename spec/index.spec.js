@@ -22,7 +22,6 @@ describe("index", () => {
     expect(testee.getRegistrationById).toBeDefined();
     expect(testee.getRegistrationsByPhone).toBeDefined();
     expect(testee.createRegistration).toBeDefined();
-    expect(testee.updateRegistration).toBeDefined();
 
     //sent messages
     expect(testee.getSentMessage).toBeDefined();
