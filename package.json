@@ -4,7 +4,12 @@
   "description": "Postgres support for courtbot-engine",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "_release": "npm run test && npm build && npm version $VERSION && git push && npm publish",
+    "release:prerelease": "VERSION=prerelease npm run _release",
+    "release:patch": "VERSION=patch npm run _release",
+    "release:minor": "VERSION=minor npm run _release",
+    "release:major": "VERSION=major npm run _release"
   },
   "keywords": [
     "courtbot"
@@ -16,8 +21,10 @@
     "proxyquire": "^1.7.10"
   },
   "dependencies": {
-    "courtbot-engine": "^1.0.0",
     "db-migrate": "^0.10.0-beta.20",
     "pg": "^6.1.2"
+  },
+  "peerDependencies": {
+    "courtbot-engine": "^1.0.0"
   }
 }
