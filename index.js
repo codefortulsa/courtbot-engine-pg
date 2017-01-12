@@ -2,6 +2,7 @@ var pg = require("pg");
 var courtbot = require("courtbot-engine");
 var moment = require("moment");
 var DBMigrate = require("db-migrate");
+var log4js = require("log4js");
 
 courtbot.setRegistrationSource(function(connectionString) {
   return {
@@ -158,7 +159,26 @@ courtbot.setRegistrationSource(function(connectionString) {
     },
     migrate: function() {
       var dbmigrate = DBMigrate.getInstance(true, {cwd: __dirname});
-      return dbmigrate.up();
+
+      //monkey patch
+      var oldLog = console.log;
+      var oldInfo = console.info;
+      var oldError = console.error;
+      var oldWarn = console.warn;
+      const logger = log4js.getLogger("db-migrate");
+
+      console.log = function (){ logger.debug.apply(logger, arguments); }
+      console.info = function (){ logger.info.apply(logger, arguments); }
+      console.error = function (){ logger.error.apply(logger, arguments); }
+      console.warn = function (){ logger.warn.apply(logger, arguments); }
+
+      return dbmigrate.up().then(() => {
+        //un-monkey patch
+        console.log = oldLog;
+        console.info = oldInfo;
+        console.error = oldError;
+        console.warn = oldWarn;
+      });
     }
   };
 });
