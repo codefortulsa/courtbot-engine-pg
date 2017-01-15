@@ -1,9 +1,7 @@
 import setup from './setup';
-var proxyquire = require("proxyquire").noCallThru();
+import {beforeEach, describe, it} from "mocha";
+const proxyquire = require("proxyquire").noCallThru();
 
-const jasmine = {
-    any: () => {}
-};
 
 describe("index", () => {
   const {sandbox, expect} = setup();
@@ -51,26 +49,20 @@ describe("index", () => {
       });
 
       describe("and the query finishes executing with no errors", () => {
-        beforeEach(() => {
-          clientSpy.query = sandbox.spy((q,p,fn) => fn(undefined, {rows: [1]}));
-        });
         it("returns the data", function() {
-          return testee.getRegistrationById(1234)
-            .then(r => {
-              expect(doneSpy).to.have.been.called();
-              expect(r).to.eql(1);
-            });
+          clientSpy.query = sandbox.spy((q,p,fn) => fn(undefined, {rows: [1]}));
+
+          const promise = testee.getRegistrationById(1234);
+
+          expect(doneSpy).to.have.been.called();
+          return expect(promise).to.eventually.eql(1);
         });
       });
 
-      describe("and the query finishes executing with errors", () => {
-        beforeEach(() => {
-          clientSpy.query = sandbox.spy((q,p,fn) => fn("wtf"));
-        });
+      describe("and the query finishes executing with errors", () => {;
         it("fails with the error", () => {
-          return testee.getRegistrationById(1234)
-            .then(() => Promise.reject("Promise should have rejected."))
-            .catch(err => expect(err).to.eql("wtf"));
+          clientSpy.query = sandbox.spy((q,p,fn) => fn("wtf"));
+          return expect(testee.getRegistrationById(1234)).to.be.rejectedWith("wtf");
         });
       });
     });
@@ -83,7 +75,6 @@ describe("index", () => {
     });
 
     describe("when the database connects", () => {
-
       it("executes the sql query to retreive the rows", () => {
         testee.getRegistrationsByPhone("1234567890");
         expect(doneSpy).not.to.have.been.called();
@@ -91,26 +82,20 @@ describe("index", () => {
       });
 
       describe("and the query finishes executing with no errors", () => {
-        beforeEach(() => {
-          clientSpy.query = sandbox.spy((q,p,fn) => fn(undefined, {rows: [1, 2, 3]}));
-        });
         it("returns the data", () => {
-          return testee.getRegistrationsByPhone("1234567890")
-            .then((r) => {
-              expect(doneSpy).to.have.been.called();
-              expect(r).to.eql([1, 2, 3]);
-            });
+          clientSpy.query = sandbox.spy((q,p,fn) => fn(undefined, {rows: [1, 2, 3]}));
+
+          const promise = testee.getRegistrationsByPhone("1234567890");
+
+          expect(doneSpy).to.have.been.called();
+          return expect(promise).to.eventually.eql([1,2,3]);
         });
       });
 
       describe("and the query finishes executing with errors", () => {
-        beforeEach(() => {
-          clientSpy.query = sandbox.spy((q,p,fn) => fn("wtf"));
-        });
         it("fails with the error", () => {
-          return testee.getRegistrationsByPhone("1234567890")
-            .then(()=>Promise.reject("Promise should have rejected"))
-            .catch(err => expect(err).to.eql("wtf"))
+          clientSpy.query = sandbox.spy((q,p,fn) => fn("wtf"));
+          return expect(testee.getRegistrationsByPhone("1234567890")).to.be.rejectedWith("wtf");
         });
       });
     });
