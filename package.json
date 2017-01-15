@@ -4,7 +4,7 @@
   "description": "Postgres support for courtbot-engine",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine",
+    "test": "mocha",
     "_release": "npm run test && npm build && npm version $VERSION && git push && npm publish",
     "release:prerelease": "VERSION=prerelease npm run _release",
     "release:patch": "VERSION=patch npm run _release",
@@ -12,13 +12,31 @@
     "release:major": "VERSION=major npm run _release"
   },
   "keywords": [
-    "courtbot"
+    "courtbot",
+    "postgres",
+    "courtbot-engine"
   ],
   "author": "Philip Kin",
   "license": "MIT",
   "devDependencies": {
-    "jasmine": "^2.5.2",
-    "proxyquire": "^1.7.10"
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-rewire": "^1.0.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-register": "^6.18.0",
+    "chai": "^2.1.2",
+    "chai-as-promised": "^6.0.0",
+    "chance": "^1.0.4",
+    "courtbot-engine": "^1.1.0",
+    "dirty-chai": "^1.2.2",
+    "express": "^4.14.0",
+    "mocha": "^2.2.4",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.15.4",
+    "sinon-chai": "^2.8.0",
+    "webpack": "^1.14.0"
   },
   "dependencies": {
     "db-migrate": "^0.10.0-beta.20",
