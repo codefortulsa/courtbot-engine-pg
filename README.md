@@ -1,4 +1,4 @@
-# courtbot-engine-pg
+# courtbot-engine-pg [![Build Status](https://travis-ci.org/codefortulsa/courtbot-engine-pg.svg?branch=master)](https://travis-ci.org/codefortulsa/courtbot-engine-pg)
 
 This is a Postgres database layer for courtbot-engine
 
