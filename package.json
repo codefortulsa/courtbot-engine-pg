@@ -1,10 +1,15 @@
 {
   "name": "courtbot-engine-pg",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Postgres support for courtbot-engine",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "_release": "npm run test && npm build && npm version $VERSION && git push && npm publish",
+    "release:prerelease": "VERSION=prerelease npm run _release",
+    "release:patch": "VERSION=patch npm run _release",
+    "release:minor": "VERSION=minor npm run _release",
+    "release:major": "VERSION=major npm run _release"
   },
   "keywords": [
     "courtbot",
@@ -24,6 +29,7 @@
     "chai": "^2.1.2",
     "chai-as-promised": "^6.0.0",
     "chance": "^1.0.4",
+    "courtbot-engine": "^1.1.0",
     "dirty-chai": "^1.2.2",
     "express": "^4.14.0",
     "mocha": "^2.2.4",
@@ -33,7 +39,11 @@
     "webpack": "^1.14.0"
   },
   "dependencies": {
-    "courtbot-engine": "^1.0.0",
+    "db-migrate": "^0.10.0-beta.20",
+    "log4js": "^1.1.0",
     "pg": "^6.1.2"
+  },
+  "peerDependencies": {
+    "courtbot-engine": "^1.1.0"
   }
 }
