@@ -10,8 +10,8 @@ require("courtbot-engine-pg");
 
 ...
 
-courtbot.addRoutes(app, {
+app.use("/sms", courbot.routes({
   dbUrl: databaseurl,
   <other options>
-});
+}));
 ~~~
