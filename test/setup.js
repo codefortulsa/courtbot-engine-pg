@@ -1,6 +1,6 @@
 import chai from "chai";
-import dirtyChai from "dirty-chai";
 import chaiAsPromised from "chai-as-promised";
+import dirtyChai from "dirty-chai";
 import sinonChai from "sinon-chai";
 import sinon from "sinon";
 import Chance from "chance";
