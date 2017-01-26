@@ -2,14 +2,13 @@
   "name": "courtbot-engine-pg",
   "version": "1.1.0",
   "description": "Postgres support for courtbot-engine",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "jasmine",
-    "_release": "npm run test && npm build && npm version $VERSION && git push && npm publish",
-    "release:prerelease": "VERSION=prerelease npm run _release",
-    "release:patch": "VERSION=patch npm run _release",
-    "release:minor": "VERSION=minor npm run _release",
-    "release:major": "VERSION=major npm run _release"
+    "test": "mocha",
+    "test-watch": "mocha --watch",
+    "build": "rm -rf lib && babel --presets es2015 src --out-dir lib",
+    "release": "npm run test && npm run build && npm run lint && release && npm publish",
+    "lint": "eslint src/ test/ --ext .js, .jsx --ignore-path .eslintignore"
   },
   "keywords": [
     "courtbot"
@@ -17,8 +16,22 @@
   "author": "Philip Kin",
   "license": "MIT",
   "devDependencies": {
-    "jasmine": "^2.5.2",
-    "proxyquire": "^1.7.10"
+    "babel-cli": "^6.22.2",
+    "babel-eslint": "^7.1.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-register": "^6.22.0",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chance": "^1.0.4",
+    "courtbot-engine": "^1.1.0",
+    "dirty-chai": "^1.2.2",
+    "eslint": "^3.14.1",
+    "express": "^4.14.0",
+    "git-release": "^0.6.0",
+    "mocha": "^3.2.0",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.17.7",
+    "sinon-chai": "^2.8.0"
   },
   "dependencies": {
     "db-migrate": "^0.10.0-beta.20",
