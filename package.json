@@ -1,6 +1,6 @@
 {
   "name": "courtbot-engine-pg",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Postgres support for courtbot-engine",
   "main": "lib/index.js",
   "scripts": {
@@ -17,9 +17,9 @@
   ],
   "author": "Philip Kin",
   "license": "MIT",
-  "repository" : { 
-    "type" : "git", 
-    "url" : "https://github.com/codefortulsa/courtbot-engine-pg.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codefortulsa/courtbot-engine-pg.git"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
