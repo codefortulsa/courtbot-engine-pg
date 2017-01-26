@@ -20,7 +20,7 @@ function setup() {
         expect: chai.expect,
         should: chai.should(),
         chance: new Chance(),
-        sandbox,
+        sandbox
     };
 }
 

@@ -126,7 +126,7 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('SELECT * FROM registrations WHERE phone = $1', [phone], function(err, result) {
+          client.query('SELECT * FROM registrations WHERE phone = $1 AND name = $2 AND date = $3 AND description = $4', [phone, name, date, description], function(err, result) {
             done();
             if(err) return reject(err);
             resolve(result.rows);
@@ -161,6 +161,7 @@ courtbot.setRegistrationSource(function(connectionString) {
       var dbmigrate = DBMigrate.getInstance(true, {cwd: __dirname});
 
       //monkey patch
+      /* eslint-disable no-console */
       var oldLog = console.log;
       var oldInfo = console.info;
       var oldError = console.error;
@@ -179,6 +180,7 @@ courtbot.setRegistrationSource(function(connectionString) {
         console.error = oldError;
         console.warn = oldWarn;
       });
+      /* eslint-enable no-console */
     }
   };
 });

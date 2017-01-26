@@ -14,7 +14,7 @@ describe("index", () => {
 
     courtbot = {setRegistrationSource: sandbox.spy(fn=>testee = fn("test"))};
 
-    proxyquire("../index", {
+    proxyquire("../src/index", {
       "pg": pg,
       "courtbot-engine": courtbot
     });
@@ -59,7 +59,7 @@ describe("index", () => {
         });
       });
 
-      describe("and the query finishes executing with errors", () => {;
+      describe("and the query finishes executing with errors", () => {
         it("fails with the error", () => {
           clientSpy.query = sandbox.spy((q,p,fn) => fn("wtf"));
           return expect(testee.getRegistrationById(1234)).to.be.rejectedWith("wtf");
