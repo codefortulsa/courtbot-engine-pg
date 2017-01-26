@@ -14,7 +14,7 @@ describe("index", () => {
 
     courtbot = {setRegistrationSource: sandbox.spy(fn=>testee = fn("test"))};
 
-    proxyquire("../index", {
+    proxyquire("../src/index", {
       "pg": pg,
       "courtbot-engine": courtbot
     });
