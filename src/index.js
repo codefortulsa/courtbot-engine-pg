@@ -5,6 +5,24 @@ var DBMigrate = require("db-migrate");
 var log4js = require("log4js");
 
 courtbot.setRegistrationSource(function(connectionString) {
+
+  function getRegistrationsByContact(contact, communication_type) {
+    return new Promise(function(resolve, reject) {
+      pg.connect(connectionString, function(err, client, done) {
+        if(err)
+        {
+          reject(err);
+          return;
+        }
+        client.query('SELECT * FROM registrations WHERE contact = $1 AND communication_type = $2', [contact, communication_type], function(err, result) {
+          done();
+          if(err) return reject(err);
+          resolve(result.rows);
+        });
+      });
+    });
+  }
+
   return {
     getRegistrationById: function (id) {
       return new Promise(function(resolve, reject) {
@@ -28,22 +46,7 @@ courtbot.setRegistrationSource(function(connectionString) {
       });
     },
 
-    getRegistrationsByContact: function (contact, communication_type) {
-      return new Promise(function(resolve, reject) {
-        pg.connect(connectionString, function(err, client, done) {
-          if(err)
-          {
-            reject(err);
-            return;
-          }
-          client.query('SELECT * FROM registrations WHERE contact = $1 AND communication_type = $2', [contact, communication_type], function(err, result) {
-            done();
-            if(err) return reject(err);
-            resolve(result.rows);
-          });
-        });
-      });
-    },
+    getRegistrationsByContact,
 
     getRegistrationsByPhone: function (phone) {
       log4js.getLogger("deprecated-phone-registration")
