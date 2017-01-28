@@ -6,6 +6,8 @@ const proxyquire = require("proxyquire").noCallThru();
 describe("index", () => {
   const {sandbox, expect} = setup();
   let testee, pg, courtbot, doneSpy, clientSpy;
+  let getLoggerStub;
+  let logger;
 
   beforeEach(() => {
     doneSpy = sandbox.stub();
@@ -14,9 +16,15 @@ describe("index", () => {
 
     courtbot = {setRegistrationSource: sandbox.spy(fn=>testee = fn("test"))};
 
+    logger = {
+      warning: sandbox.stub()
+    };
+    getLoggerStub = sandbox.stub().returns(logger);
+
     proxyquire("../src/index", {
       "pg": pg,
-      "courtbot-engine": courtbot
+      "courtbot-engine": courtbot,
+      "log4js": { getLogger: getLoggerStub}
     });
   });
 
@@ -78,7 +86,7 @@ describe("index", () => {
       it("executes the sql query to retreive the rows", () => {
         testee.getRegistrationsByPhone("1234567890");
         expect(doneSpy).not.to.have.been.called();
-        expect(clientSpy.query).to.have.been.calledWith("SELECT * FROM registrations WHERE phone = $1", ["1234567890"]);
+        expect(clientSpy.query).to.have.been.calledWith("SELECT * FROM registrations WHERE contact = $1 AND communication_type = $2", ["1234567890", "sms"]);
       });
 
       describe("and the query finishes executing with no errors", () => {
