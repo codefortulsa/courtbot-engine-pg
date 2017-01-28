@@ -28,7 +28,7 @@ courtbot.setRegistrationSource(function(connectionString) {
       });
     },
 
-    getRegistrationsByPhone: function (phone) {
+    getRegistrationsByContact: function (contact, communication_type) {
       return new Promise(function(resolve, reject) {
         pg.connect(connectionString, function(err, client, done) {
           if(err)
@@ -36,13 +36,19 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('SELECT * FROM registrations WHERE phone = $1', [phone], function(err, result) {
+          client.query('SELECT * FROM registrations WHERE contact = $1 AND communication_type = $2', [contact, communication_type], function(err, result) {
             done();
             if(err) return reject(err);
             resolve(result.rows);
           });
         });
       });
+    },
+
+    getRegistrationsByPhone: function (phone) {
+      log4js.getLogger("deprecated-phone-registration")
+        .warning("getRegistrationsByPhone(phone) is deprecated, use getRegistrationsByContact(contact, communication_type)");
+      return getRegistrationsByContact(phone, "sms");
     },
 
     getRegistrationsByState: function (state) {
@@ -70,8 +76,8 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('INSERT INTO registrations (phone, name, state, case_number, create_date) VALUES ($1,$2,$3,$4,$5) RETURNING registration_id',
-                      [registration.phone, registration.name, registration.state, registration.case_number, moment().toString()],
+          client.query('INSERT INTO registrations (contact, communication_type, name, state, case_number, create_date) VALUES ($1,$2,$3,$4,$5,$6) RETURNING registration_id',
+                      [registration.contact || registration.phone, registration.communication_type || "sms", registration.name, registration.state, registration.case_number, moment().toString()],
                       function(err, result) {
                         done();
                         if(err) return reject(err);
@@ -118,7 +124,7 @@ courtbot.setRegistrationSource(function(connectionString) {
       });
     },
 
-    getSentMessage: function (phone, name, date, description) {
+    getSentMessage: function (contact, communication_type, name, date, description) {
       return new Promise(function(resolve, reject) {
         pg.connect(connectionString, function(err, client, done) {
           if(err)
@@ -126,7 +132,7 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('SELECT * FROM registrations WHERE phone = $1 AND name = $2 AND date = $3 AND description = $4', [phone, name, date, description], function(err, result) {
+          client.query('SELECT * FROM registrations WHERE contact = $1 AND name = $2 AND date = $3 AND description = $4 AND communication_type = $5', [contact, name, date, description, communication_type], function(err, result) {
             done();
             if(err) return reject(err);
             resolve(result.rows);
@@ -134,7 +140,7 @@ courtbot.setRegistrationSource(function(connectionString) {
         });
       });
     },
-    createSentMessage: function (phone, name, date, description) {
+    createSentMessage: function (contact, communication_type, name, date, description) {
       return new Promise(function(resolve, reject) {
         pg.connect(connectionString, function(err, client, done) {
           if(err)
@@ -142,8 +148,8 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('INSERT INTO sent_messages (phone, name, date, description) VALUES ($1,$2,$3,$4) RETURNING message_id',
-                      [phone, name, date, description],
+          client.query('INSERT INTO sent_messages (contact, communication_type, name, date, description) VALUES ($1,$2,$3,$4,$5) RETURNING message_id',
+                      [contact, communication_type, name, date, description],
                       function(err, result) {
                         done();
                         if(err) return reject(err);

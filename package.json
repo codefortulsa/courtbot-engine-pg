@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "db-migrate": "^0.10.0-beta.20",
+    "db-migrate-pg": "^0.1.11",
     "log4js": "^1.1.0",
     "pg": "^6.1.2"
   },
