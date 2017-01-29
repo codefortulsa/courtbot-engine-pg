@@ -167,7 +167,7 @@ courtbot.setRegistrationSource(function(connectionString) {
       });
     },
     migrate: function() {
-      var dbmigrate = DBMigrate.getInstance(true, {cwd: __dirname});
+      var dbmigrate = DBMigrate.getInstance(true, {cwd: __dirname + "/.."});
 
       //monkey patch
       /* eslint-disable no-console */
