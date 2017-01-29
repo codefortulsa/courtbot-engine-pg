@@ -135,7 +135,7 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('SELECT * FROM registrations WHERE contact = $1 AND name = $2 AND date = $3 AND description = $4 AND communication_type = $5', [contact, name, date, description, communication_type], function(err, result) {
+          client.query('SELECT * FROM sent_messages WHERE contact = $1 AND name = $2 AND date = $3 AND description = $4 AND communication_type = $5', [contact, name, date, description, communication_type], function(err, result) {
             done();
             if(err) return reject(err);
             resolve(result.rows);
