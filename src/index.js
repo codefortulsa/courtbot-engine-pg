@@ -188,6 +188,8 @@ courtbot.setRegistrationSource(function(connectionString) {
         console.info = oldInfo;
         console.error = oldError;
         console.warn = oldWarn;
+      }).catch(err => {
+        logger.error("Error migrating: ", err);
       });
       /* eslint-enable no-console */
     }
