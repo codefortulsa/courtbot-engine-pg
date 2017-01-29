@@ -151,7 +151,7 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('INSERT INTO sent_messages (contact, communication_type, date, description) VALUES ($1,$2,$3,$4) RETURNING message_id',
+          client.query('INSERT INTO sent_messages (contact, communication_type, date, description) VALUES ($1,$2,$3,$4) RETURNING msg_id',
                       [contact, communication_type, date, description],
                       function(err, result) {
                         done();
