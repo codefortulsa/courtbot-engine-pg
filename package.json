@@ -1,6 +1,6 @@
 {
   "name": "courtbot-engine-pg",
-  "version": "1.3.7",
+  "version": "1.3.8",
   "description": "Postgres support for courtbot-engine",
   "main": "lib/index.js",
   "scripts": {
