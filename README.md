@@ -2,7 +2,7 @@
 
 This is a Postgres database layer for courtbot-engine
 
-##Usage
+## Usage
 
 ~~~javascript
 var courbot=require("courtbot-engine");
@@ -15,3 +15,7 @@ app.use("/sms", courbot.routes({
   <other options>
 }));
 ~~~
+
+## Auditing schema
+
+This module uses [Audit trigger 91plus](https://wiki.postgresql.org/wiki/Audit_trigger_91plus) to track database CRUD operations. All inserts, updates, and deletes are audited in the `audit.logged_actions` table. This is useful for debugging problems.
