@@ -126,8 +126,7 @@ courtbot.setRegistrationSource(function(connectionString) {
         });
       });
     },
-
-    getSentMessage: function (contact, communication_type, date, description) {
+    getSentMessages: function (contact, case_number) {
       return new Promise(function(resolve, reject) {
         pg.connect(connectionString, function(err, client, done) {
           if(err)
@@ -135,7 +134,7 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('SELECT * FROM sent_messages WHERE contact = $1 AND date = $2 AND description = $3 AND communication_type = $4', [contact, date, description, communication_type], function(err, result) {
+          client.query('SELECT * FROM sent_messages WHERE contact = $1 AND case_number = $2', [contact, case_number], function(err, result) {
             done();
             if(err) return reject(err);
             resolve(result.rows);
@@ -143,7 +142,7 @@ courtbot.setRegistrationSource(function(connectionString) {
         });
       });
     },
-    createSentMessage: function (contact, communication_type, date, description) {
+    getSentMessage: function (contact, communication_type, name, date, description, case_number) {
       return new Promise(function(resolve, reject) {
         pg.connect(connectionString, function(err, client, done) {
           if(err)
@@ -151,8 +150,24 @@ courtbot.setRegistrationSource(function(connectionString) {
             reject(err);
             return;
           }
-          client.query('INSERT INTO sent_messages (contact, communication_type, date, description) VALUES ($1,$2,$3,$4) RETURNING msg_id',
-                      [contact, communication_type, date, description],
+          client.query('SELECT * FROM sent_messages WHERE contact = $1 AND date = $2 AND (description = $3 OR description IS NULL) AND communication_type = $4 AND name = $5 AND (case_number = $6 OR case_number IS NULL)', [contact, date, description, communication_type, name, case_number], function(err, result) {
+            done();
+            if(err) return reject(err);
+            resolve(result.rows);
+          });
+        });
+      });
+    },
+    createSentMessage: function (contact, communication_type, name, date, description, case_number) {
+      return new Promise(function(resolve, reject) {
+        pg.connect(connectionString, function(err, client, done) {
+          if(err)
+          {
+            reject(err);
+            return;
+          }
+          client.query('INSERT INTO sent_messages (contact, communication_type, date, description, name, case_number) VALUES ($1,$2,$3,$4,$5,$6) RETURNING msg_id',
+                      [contact, communication_type, date, description, name, case_number],
                       function(err, result) {
                         done();
                         if(err) return reject(err);
